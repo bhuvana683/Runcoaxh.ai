@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FitCoach AI - Universal Intelligence & Fitness Coach</title>
+<title>FitCoach AI - Universal Intelligence, Image Gen & Voice Chat</title>
 <!-- Google Fonts: Plus Jakarta Sans & Inter for crisp modern typography -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +108,16 @@
     padding: 0.35rem 0.75rem;
     border-radius: 30px;
     border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .hud-pill.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .hud-pill.clickable:hover {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: var(--accent);
   }
 
   .status-dot {
@@ -222,17 +232,40 @@
   .msg.user { align-items: flex-end; }
   .msg.agent { align-items: flex-start; }
 
+  .sender-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.35rem;
+    padding: 0 0.3rem;
+  }
+
   .sender-label {
     font-size: 0.76rem;
     font-weight: 700;
     color: var(--text-muted);
-    margin-bottom: 0.35rem;
-    padding: 0 0.3rem;
     display: flex;
     align-items: center;
     gap: 0.4rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
+  }
+
+  .speak-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+  }
+
+  .speak-btn:hover {
+    background: rgba(16, 185, 129, 0.15);
   }
 
   .bubble {
@@ -320,8 +353,9 @@
   /* --- Form & Input Bar --- */
   form {
     display: flex;
-    gap: 0.75rem;
-    padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.6rem 0.55rem 0.9rem;
     border: 1.5px solid var(--border);
     border-radius: 20px;
     background: #ffffff;
@@ -347,6 +381,39 @@
 
   input::placeholder {
     color: var(--text-muted);
+  }
+
+  .mic-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #f8fafc;
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .mic-btn:hover {
+    border-color: var(--accent);
+    background: #f0fdf4;
+    color: var(--accent-dark);
+  }
+
+  .mic-btn.listening {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #dc2626;
+    animation: micPulse 1.2s infinite ease-in-out;
+  }
+
+  @keyframes micPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
   }
 
   button.send-btn {
@@ -409,15 +476,15 @@
     <div class="brand-logo">🏋️</div>
     <div>
       <div class="brand-title">FitCoach AI</div>
-      <div class="brand-tagline">Universal Intelligence & Fitness Command</div>
+      <div class="brand-tagline">Universal AI, Image Generation & Voice Chat</div>
     </div>
   </div>
   <div class="hud-stats">
+    <button id="tts-btn" type="button" class="hud-pill clickable" title="Toggle Voice Response">
+      🔊 Speech: ON
+    </button>
     <div class="hud-pill">
-      <span class="status-dot"></span> Active Engine
-    </div>
-    <div class="hud-pill">
-      💪 1RM & Memory Bank
+      <span class="status-dot"></span> Imagen 3 & Omni
     </div>
   </div>
 </header>
@@ -425,29 +492,30 @@
 <div id="log">
   <div class="hero-card">
     <div class="hero-title">
-      <span>🚀</span> FitCoach AI Command Center
+      <span>🚀</span> FitCoach AI - Full Multi-Modal Suite
     </div>
     <div class="hero-subtitle">
-      Your all-knowing AI assistant and strength coach. Ask me anything — from complex science, math, and software engineering to customized workout routines, 1RM calculations, macro tracking, and exercise videos!
+      Your universal AI companion with Image Generation, Voice Chat (Speech-to-Text & Text-to-Speech), Strength Math, Workout Routines, and Omni Exercise Videos!
     </div>
     <div class="capabilities-grid">
-      <div class="cap-card"><span class="cap-icon">🏋️</span> Workout Routines</div>
-      <div class="cap-card"><span class="cap-icon">💪</span> 1RM Strength Math</div>
-      <div class="cap-card"><span class="cap-icon">🧠</span> Deep General AI</div>
-      <div class="cap-card"><span class="cap-icon">📍</span> Gym Finder & Media</div>
+      <div class="cap-card"><span class="cap-icon">🎙️</span> Voice Speech-to-Text</div>
+      <div class="cap-card"><span class="cap-icon">🖼️</span> Imagen 3 Image Gen</div>
+      <div class="cap-card"><span class="cap-icon">🔊</span> Text-to-Speech Audio</div>
+      <div class="cap-card"><span class="cap-icon">🎥</span> Omni Video Generation</div>
     </div>
   </div>
 </div>
 
 <div class="bottom-bar">
   <div class="prompts-row">
-    <button type="button" class="prompt-chip" data-prompt="Suggest a chest & triceps workout routine">🏋️ Chest & Triceps Workout</button>
-    <button type="button" class="prompt-chip" data-prompt="Calculate my 1RM for 225 lbs for 5 reps">💪 Calculate 1RM (225 lbs x 5)</button>
-    <button type="button" class="prompt-chip" data-prompt="Explain quantum entanglement simply with an analogy">⚛️ Quantum Entanglement</button>
-    <button type="button" class="prompt-chip" data-prompt="Write a Python script to optimize daily macros and workout split">💻 Python Macro Optimizer</button>
+    <button type="button" class="prompt-chip" data-prompt="Generate an image of a futuristic neon gym with high tech equipment">🖼️ Generate Neon Gym Image</button>
+    <button type="button" class="prompt-chip" data-prompt="Generate an image of a delicious high-protein salmon avocado meal prep bowl">🍱 Generate Meal Prep Image</button>
+    <button type="button" class="prompt-chip" data-prompt="Suggest a chest & triceps workout routine">🏋️ Chest & Triceps Routine</button>
+    <button type="button" class="prompt-chip" data-prompt="Calculate my 1RM for 225 lbs for 5 reps">💪 Calculate 1RM (225x5)</button>
   </div>
   <form id="form">
-    <input id="input" placeholder="Ask FitCoach AI anything (fitness, science, math, code)…" autocomplete="off" autofocus>
+    <button id="mic-btn" type="button" class="mic-btn" title="Click to speak (Voice Input)">🎙️</button>
+    <input id="input" placeholder="Speak (🎙️) or type anything (fitness, image gen, code, math)…" autocomplete="off" autofocus>
     <button class="send-btn">Send ⚡</button>
   </form>
 </div>
@@ -456,20 +524,104 @@
 const log = document.getElementById("log");
 const form = document.getElementById("form");
 const input = document.getElementById("input");
+const micBtn = document.getElementById("mic-btn");
+const ttsBtn = document.getElementById("tts-btn");
+
+let autoSpeak = true;
+
+if (ttsBtn) {
+  ttsBtn.addEventListener("click", () => {
+    autoSpeak = !autoSpeak;
+    ttsBtn.textContent = autoSpeak ? "🔊 Speech: ON" : "🔇 Speech: OFF";
+    ttsBtn.style.opacity = autoSpeak ? "1" : "0.6";
+  });
+}
+
+function speakText(text) {
+  if (!('speechSynthesis' in window) || !text) return;
+  window.speechSynthesis.cancel();
+  const cleanText = text.replace(/<[^>]*>/g, '').replace(/[*_#`]/g, '');
+  if (!cleanText.trim()) return;
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  utterance.rate = 1.05;
+  utterance.pitch = 1.0;
+  window.speechSynthesis.speak(utterance);
+}
 
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-function bubble(who) {
+function bubble(who, fullText) {
   const m = el("div", "msg " + who);
   const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const senderRow = el("div", "sender-row");
   const labelText = (who === "user" ? "👤 You" : "🏋️ FitCoach AI") + " • " + now;
   const label = el("div", "sender-label", labelText);
+  senderRow.appendChild(label);
+
+  if (who === "agent") {
+    const speakBtn = el("button", "speak-btn", "🔊 Speak");
+    speakBtn.type = "button";
+    speakBtn.onclick = () => {
+      const bubbleEl = m.querySelector(".bubble");
+      if (bubbleEl) speakText(bubbleEl.innerText);
+    };
+    senderRow.appendChild(speakBtn);
+  }
+
   const b = el("div", "bubble");
-  m.appendChild(label);
+  m.appendChild(senderRow);
   m.appendChild(b);
   log.appendChild(m);
   log.scrollTop = log.scrollHeight;
   return b;
+}
+
+/* ----------------------------------------------------------------------------
+ * Speech-to-Text (Voice Recognition)
+ * -------------------------------------------------------------------------- */
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  recognition.onstart = () => {
+    micBtn.classList.add("listening");
+    micBtn.textContent = "🔴";
+    input.placeholder = "Listening... Speak now...";
+  };
+
+  recognition.onresult = (e) => {
+    let transcript = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    input.value = transcript;
+  };
+
+  recognition.onerror = (e) => {
+    console.error("Speech recognition error:", e.error);
+    micBtn.classList.remove("listening");
+    micBtn.textContent = "🎙️";
+    input.placeholder = "Speak (🎙️) or type anything...";
+  };
+
+  recognition.onend = () => {
+    micBtn.classList.remove("listening");
+    micBtn.textContent = "🎙️";
+    input.placeholder = "Speak (🎙️) or type anything...";
+  };
+
+  micBtn.addEventListener("click", () => {
+    if (micBtn.classList.contains("listening")) {
+      recognition.stop();
+    } else {
+      recognition.start();
+    }
+  });
+} else {
+  micBtn.style.display = "none";
 }
 
 /* ----------------------------------------------------------------------------
@@ -573,6 +725,7 @@ function renderA2uiMessage(msgData, container) {
 function renderReply(parts) {
   const container = bubble("agent");
   let hasRich = false;
+  let textToSpeak = "";
 
   for (const p of parts) {
     if (p.kind === "a2ui" && p.data) {
@@ -580,11 +733,16 @@ function renderReply(parts) {
     } else if (p.kind === "text" && p.text) {
       const textNode = document.createTextNode(p.text);
       container.appendChild(textNode);
+      textToSpeak += p.text + " ";
     }
   }
 
   if (hasRich && container.children.length === 1 && container.firstElementChild.classList.contains("a2card")) {
     container.classList.add("rich");
+  }
+
+  if (autoSpeak && textToSpeak.trim()) {
+    speakText(textToSpeak);
   }
 }
 
