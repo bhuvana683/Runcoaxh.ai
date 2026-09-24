@@ -3,126 +3,266 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FitCoach AI - Smart Fitness & Nutrition Coach</title>
-<!-- Google Fonts & Material Symbols -->
+<title>FitCoach AI - Universal Intelligence & Fitness Coach</title>
+<!-- Google Fonts: Plus Jakarta Sans & Inter for crisp modern typography -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 <style>
   :root {
-    --accent: #0d9488;
-    --accent-dark: #0f766e;
-    --accent-light: #f0fdfa;
-    --bg: #f8fafc;
+    --accent: #10b981;
+    --accent-dark: #059669;
+    --accent-cyan: #06b6d4;
+    --bg-dark: #0f172a;
+    --bg-main: #f1f5f9;
     --card-bg: #ffffff;
     --text-primary: #0f172a;
     --text-secondary: #475569;
+    --text-muted: #64748b;
     --border: #e2e8f0;
-    --user-msg-bg: linear-gradient(135deg, #0d9488, #0f766e);
+    --user-bubble-bg: linear-gradient(135deg, #059669, #0891b2);
+    --agent-bubble-bg: #ffffff;
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 10px 30px rgba(16, 185, 129, 0.12);
   }
+
   * { box-sizing: border-box; }
+  
   body {
     margin: 0;
-    font-family: 'Outfit', system-ui, sans-serif;
-    background: var(--bg);
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background: var(--bg-main);
     color: var(--text-primary);
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
   }
+
+  /* --- Fitness Command Header HUD --- */
   header {
-    background: #0f172a;
-    color: #fff;
-    padding: 0.9rem 1.5rem;
-    font-weight: 700;
-    font-size: 1.2rem;
+    background: var(--bg-dark);
+    color: #ffffff;
+    padding: 0.85rem 1.8rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 3px solid var(--accent);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 10;
   }
-  .header-title {
+  
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+  }
+
+  .brand-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .brand-tagline {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-top: -2px;
+  }
+
+  .hud-stats {
     display: flex;
     align-items: center;
     gap: 0.6rem;
   }
-  .status-badge {
+
+  .hud-pill {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.1);
-    padding: 0.25rem 0.65rem;
-    border-radius: 20px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 0.35rem 0.75rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
+
   .status-dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     background: #10b981;
     border-radius: 50%;
-    box-shadow: 0 0 8px #10b981;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulseGlow 2s infinite ease-in-out;
   }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  /* --- Main Dialogue Log --- */
   #log {
     flex: 1;
     overflow-y: auto;
-    padding: 1.5rem;
-    max-width: 820px;
+    padding: 1.8rem 1.5rem;
+    max-width: 900px;
     width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.4rem;
+    scroll-behavior: smooth;
   }
+
+  /* --- Custom Fitness Dashboard Hero Card --- */
+  .hero-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.6rem 1.8rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);
+  }
+
+  .hero-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--bg-dark);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+  }
+
+  .capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .cap-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .cap-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .cap-icon {
+    font-size: 1.2rem;
+  }
+
+  /* --- Message Bubbles & Layout --- */
   .msg {
     display: flex;
     flex-direction: column;
     width: 100%;
+    animation: fadeIn 0.25s ease-out;
   }
-  .msg.user {
-    align-items: flex-end;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .msg.agent {
-    align-items: flex-start;
-  }
+
+  .msg.user { align-items: flex-end; }
+  .msg.agent { align-items: flex-start; }
+
   .sender-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 0.3rem;
-    padding: 0 0.2rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+    padding: 0 0.3rem;
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
   }
+
   .bubble {
     display: inline-block;
-    padding: 0.85rem 1.1rem;
-    border-radius: 16px;
+    padding: 0.95rem 1.25rem;
+    border-radius: 18px;
     background: var(--card-bg);
     border: 1px solid var(--border);
     text-align: left;
-    max-width: 85%;
+    max-width: 88%;
     white-space: pre-wrap;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    line-height: 1.6;
+    font-size: 0.96rem;
+    box-shadow: var(--shadow-sm);
   }
+
   .msg.user .bubble {
-    background: var(--user-msg-bg);
-    color: #fff;
+    background: var(--user-bubble-bg);
+    color: #ffffff;
     border: none;
     border-bottom-right-radius: 4px;
-    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    box-shadow: var(--shadow-lg);
+    font-weight: 500;
   }
+
   .msg.agent .bubble {
     border-bottom-left-radius: 4px;
+    border-left: 3px solid var(--accent);
   }
-  /* When the reply is an A2UI card, drop the bubble chrome so the card stands alone. */
+
   .bubble.rich {
     background: transparent;
     border: none;
@@ -131,146 +271,174 @@
     white-space: normal;
     box-shadow: none;
   }
+
+  /* --- Prompt Capsule Bar --- */
   .bottom-bar {
-    max-width: 820px;
+    max-width: 900px;
     width: 100%;
     margin: 0 auto;
-    padding: 0 1rem 1rem;
+    padding: 0 1.5rem 1.2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.75rem;
   }
+
   .prompts-row {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
     overflow-x: auto;
-    padding-bottom: 0.2rem;
+    padding-bottom: 0.3rem;
     scrollbar-width: thin;
   }
+
   .prompt-chip {
-    padding: 0.45rem 0.9rem;
+    padding: 0.55rem 1.1rem;
     font-size: 0.85rem;
     font-family: inherit;
-    font-weight: 500;
+    font-weight: 600;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    background: #fff;
+    border-radius: 30px;
+    background: #ffffff;
     color: var(--text-primary);
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
+
   .prompt-chip:hover {
     border-color: var(--accent);
     color: var(--accent-dark);
-    background: var(--accent-light);
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(13, 148, 136, 0.15);
+    background: #f0fdf4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.18);
   }
+
+  /* --- Form & Input Bar --- */
   form {
     display: flex;
-    gap: 0.6rem;
-    padding: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    gap: 0.75rem;
+    padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: var(--shadow-md);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
+
+  form:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+  }
+
   input {
     flex: 1;
-    padding: 0.75rem 1rem;
     border: none;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
+    font-weight: 500;
     outline: none;
     background: transparent;
     color: var(--text-primary);
   }
+
+  input::placeholder {
+    color: var(--text-muted);
+  }
+
   button.send-btn {
-    padding: 0.75rem 1.4rem;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 12px;
-    background: var(--accent);
-    color: #fff;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
     font-family: inherit;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
     transition: all 0.2s ease;
-  }
-  button.send-btn:hover {
-    background: var(--accent-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
   }
 
-  .typing-dots { display: inline-flex; align-items: center; gap: 5px; padding: 4px 4px; }
-  .typing-dots span { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: typingPulse 1.4s infinite ease-in-out both; }
+  button.send-btn:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+  }
+
+  .typing-dots { display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px; }
+  .typing-dots span { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: typingPulse 1.4s infinite ease-in-out both; }
   .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
   .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
   @keyframes typingPulse { 0%, 80%, 100% { transform: scale(0.3); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
 
-  .welcome-card {
-    background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    margin-bottom: 0.5rem;
-  }
-  .welcome-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
-  .welcome-subtitle { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.4; }
-  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; }
-  .feature-item { background: var(--accent-light); border: 1px solid rgba(13, 148, 136, 0.15); padding: 0.8rem 1rem; border-radius: 12px; font-size: 0.88rem; font-weight: 500; color: var(--accent-dark); display: flex; align-items: center; gap: 0.5rem; }
-
-  /* --- A2UI component styles (Card, Column, Row, Text, Divider, List, Image, Icon) --- */
+  /* --- A2UI Card Styling --- */
   .a2card {
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.2rem;
-    background: #fff;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    border-radius: 18px;
+    padding: 1.4rem;
+    background: #ffffff;
+    box-shadow: var(--shadow-md);
     max-width: 100%;
   }
-  .a2card + .a2card, .a2col > .a2card { margin-top: 0.6rem; }
-  .a2col { display: flex; flex-direction: column; gap: 0.5rem; }
-  .a2row { display: flex; flex-direction: row; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+  .a2card + .a2card, .a2col > .a2card { margin-top: 0.75rem; }
+  .a2col { display: flex; flex-direction: column; gap: 0.6rem; }
+  .a2row { display: flex; flex-direction: row; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
   .a2row.between { justify-content: space-between; }
-  .a2text { margin: 0; line-height: 1.5; color: var(--text-primary); }
-  .a2text.a2-h1 { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
-  .a2text.a2-h2 { font-size: 1.2rem; font-weight: 700; color: #0f172a; }
-  .a2text.a2-h3 { font-size: 1.05rem; font-weight: 600; color: #1e293b; }
-  .a2text.a2-h4 { font-size: 0.95rem; font-weight: 600; color: #334155; }
-  .a2text.a2-caption { font-size: 0.85rem; color: var(--text-secondary); }
-  .a2divider { border: none; border-top: 1px solid var(--border); margin: 0.5rem 0; width: 100%; }
-  .a2img { max-width: 100%; border-radius: 10px; display: block; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .a2text { margin: 0; line-height: 1.55; color: var(--text-primary); font-family: inherit; }
+  .a2text.a2-h1 { font-size: 1.45rem; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; }
+  .a2text.a2-h2 { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+  .a2text.a2-h3 { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+  .a2text.a2-h4 { font-size: 1.0rem; font-weight: 600; color: #334155; }
+  .a2text.a2-caption { font-size: 0.86rem; color: var(--text-secondary); }
+  .a2divider { border: none; border-top: 1px solid var(--border); margin: 0.6rem 0; width: 100%; }
+  .a2img { max-width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
   .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-size: 1.25rem; line-height: 1; vertical-align: middle; color: var(--accent); }
 </style>
 </head>
 <body>
+
 <header>
-  <div class="header-title">
-    <span>🏋️</span> FitCoach AI
+  <div class="header-brand">
+    <div class="brand-logo">🏋️</div>
+    <div>
+      <div class="brand-title">FitCoach AI</div>
+      <div class="brand-tagline">Universal Intelligence & Fitness Command</div>
+    </div>
   </div>
-  <div class="status-badge">
-    <span class="status-dot"></span> Active Assistant
+  <div class="hud-stats">
+    <div class="hud-pill">
+      <span class="status-dot"></span> Active Engine
+    </div>
+    <div class="hud-pill">
+      💪 1RM & Memory Bank
+    </div>
   </div>
 </header>
+
 <div id="log">
-    <div class="welcome-title">Welcome to FitCoach AI! 🏋️🧠</div>
-    <div class="welcome-subtitle">Your all-knowing AI assistant & fitness coach. Ask me anything — from complex science, math, and coding to workout programming, 1RM calculations, and nutrition!</div>
-    <div class="features-grid">
-      <div class="feature-item">🏋️ Workout Routines</div>
-      <div class="feature-item">💪 1RM Calculations</div>
-      <div class="feature-item">🧠 Deep Thinking & Coding</div>
-      <div class="feature-item">📍 Gym Finder & Media</div>
+  <div class="hero-card">
+    <div class="hero-title">
+      <span>🚀</span> FitCoach AI Command Center
+    </div>
+    <div class="hero-subtitle">
+      Your all-knowing AI assistant and strength coach. Ask me anything — from complex science, math, and software engineering to customized workout routines, 1RM calculations, macro tracking, and exercise videos!
+    </div>
+    <div class="capabilities-grid">
+      <div class="cap-card"><span class="cap-icon">🏋️</span> Workout Routines</div>
+      <div class="cap-card"><span class="cap-icon">💪</span> 1RM Strength Math</div>
+      <div class="cap-card"><span class="cap-icon">🧠</span> Deep General AI</div>
+      <div class="cap-card"><span class="cap-icon">📍</span> Gym Finder & Media</div>
     </div>
   </div>
 </div>
+
 <div class="bottom-bar">
   <div class="prompts-row">
     <button type="button" class="prompt-chip" data-prompt="Suggest a chest & triceps workout routine">🏋️ Chest & Triceps Workout</button>
@@ -279,8 +447,8 @@
     <button type="button" class="prompt-chip" data-prompt="Write a Python script to optimize daily macros and workout split">💻 Python Macro Optimizer</button>
   </div>
   <form id="form">
-    <input id="input" placeholder="Ask FitCoach AI anything…" autocomplete="off" autofocus>
-    <button class="send-btn">Send ➔</button>
+    <input id="input" placeholder="Ask FitCoach AI anything (fitness, science, math, code)…" autocomplete="off" autofocus>
+    <button class="send-btn">Send ⚡</button>
   </form>
 </div>
 
@@ -294,7 +462,7 @@ function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.
 function bubble(who) {
   const m = el("div", "msg " + who);
   const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const labelText = (who === "user" ? "You" : "🤖 FitCoach AI") + " • " + now;
+  const labelText = (who === "user" ? "👤 You" : "🏋️ FitCoach AI") + " • " + now;
   const label = el("div", "sender-label", labelText);
   const b = el("div", "bubble");
   m.appendChild(label);
@@ -306,12 +474,7 @@ function bubble(who) {
 
 /* ----------------------------------------------------------------------------
  * A2UI mini-renderer (v0.8 Basic Catalog subset).
- * Renders Card / Column / Row / Text / Divider / List / Image / Icon.
- * Anything else falls back to plain text (see renderReply). All text goes in via
- * textContent and image URLs are validated, so agent output can't inject HTML.
  * -------------------------------------------------------------------------- */
-
-// A "bound value" is usually {literalString: "..."}; we only support literals.
 function boundStr(v) {
   if (v == null) return "";
   if (typeof v === "string") return v;
@@ -319,138 +482,141 @@ function boundStr(v) {
   return "";
 }
 
-// child ids of a component's props: single `child` and/or `children.explicitList`.
-function childIds(props) {
-  const ids = [];
-  if (props && typeof props.child === "string") ids.push(props.child);
-  const ch = props && props.children;
-  if (ch && Array.isArray(ch.explicitList)) for (const c of ch.explicitList) if (typeof c === "string") ids.push(c);
-  return ids;
-}
-
-// A2UI icon names are camelCase (locationOn); Material Symbols wants snake_case.
-function iconName(n) { return String(n || "").replace(/([a-z0-9])([A-Z])/g, "$1_$2").replace(/\s+/g, "_").toLowerCase(); }
-
-function buildNode(id, comps, seen) {
-  if (!id || seen.has(id)) return null;   // missing / cycle guard
-  seen.add(id);
-  const spec = comps[id];
+function renderComponent(spec, compsById) {
   if (!spec || typeof spec !== "object") return null;
-  const type = Object.keys(spec)[0];
-  const props = spec[type] || {};
-  const kids = () => childIds(props).map(cid => buildNode(cid, comps, seen)).filter(Boolean);
+  const tag = Object.keys(spec)[0];
+  const props = spec[tag] || {};
 
-  switch (type) {
-    case "Card": {
-      const d = el("div", "a2card"); kids().forEach(n => d.appendChild(n)); return d;
+  if (tag === "Card") {
+    const card = el("div", "a2card");
+    const childId = props.child;
+    if (childId && compsById[childId]) {
+      const childEl = renderComponent(compsById[childId], compsById);
+      if (childEl) card.appendChild(childEl);
     }
-    case "Column":
-    case "List": {
-      const horizontal = type === "List" && props.direction === "horizontal";
-      const d = el("div", horizontal ? "a2row" : "a2col"); kids().forEach(n => d.appendChild(n)); return d;
+    return card;
+  }
+
+  if (tag === "Column") {
+    const col = el("div", "a2col");
+    const children = (props.children && props.children.explicitList) || [];
+    for (const cid of children) {
+      if (compsById[cid]) {
+        const childEl = renderComponent(compsById[cid], compsById);
+        if (childEl) col.appendChild(childEl);
+      }
     }
-    case "Row": {
-      const d = el("div", "a2row" + (props.distribution === "spaceBetween" ? " between" : ""));
-      kids().forEach(n => d.appendChild(n)); return d;
+    return col;
+  }
+
+  if (tag === "Row") {
+    const row = el("div", "a2row");
+    const children = (props.children && props.children.explicitList) || [];
+    for (const cid of children) {
+      if (compsById[cid]) {
+        const childEl = renderComponent(compsById[cid], compsById);
+        if (childEl) row.appendChild(childEl);
+      }
     }
-    case "Text": {
-      const t = el("div", "a2text");
-      const hint = String(props.usageHint || "body").toLowerCase();
-      if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(hint)) t.classList.add("a2-" + hint);
-      else if (hint === "caption") t.classList.add("a2-caption");
-      t.textContent = boundStr(props.text);
-      return t;
+    return row;
+  }
+
+  if (tag === "Text") {
+    const textStr = boundStr(props.text);
+    const hint = props.usageHint || "body";
+    let cls = "a2text";
+    if (hint === "h1") cls += " a2-h1";
+    else if (hint === "h2") cls += " a2-h2";
+    else if (hint === "h3") cls += " a2-h3";
+    else if (hint === "h4") cls += " a2-h4";
+    else if (hint === "caption") cls += " a2-caption";
+    return el("div", cls, textStr);
+  }
+
+  if (tag === "Divider") return el("hr", "a2divider");
+
+  if (tag === "Image") {
+    const url = boundStr(props.url);
+    if (!url || !/^https?:\/\//i.test(url)) {
+      return el("div", "a2text a2-caption", "Image generated — check Artifacts panel.");
     }
-    case "Divider":
-      return el("hr", "a2divider");
-    case "Image": {
-      const src = boundStr(props.url || props.src);
-      if (!/^https?:\/\//i.test(src)) return null;   // only allow safe URLs
-      const img = el("img", "a2img"); img.src = src; img.alt = boundStr(props.alt) || ""; return img;
+    const img = document.createElement("img");
+    img.className = "a2img";
+    img.src = url;
+    img.alt = boundStr(props.alt) || "Image";
+    return img;
+  }
+
+  return null;
+}
+
+function renderA2uiMessage(msgData, container) {
+  const su = msgData.surfaceUpdate;
+  if (!su || !Array.isArray(su.components)) return false;
+  const compsById = {};
+  for (const c of su.components) {
+    if (c && c.id && c.component) compsById[c.id] = c.component;
+  }
+
+  let rootId = null;
+  const br = msgData.beginRendering;
+  if (br && br.root) rootId = br.root;
+  if (!rootId && su.components.length > 0) rootId = su.components[0].id;
+  if (!rootId || !compsById[rootId]) return false;
+
+  const rendered = renderComponent(compsById[rootId], compsById);
+  if (!rendered) return false;
+  container.appendChild(rendered);
+  return true;
+}
+
+function renderReply(parts) {
+  const container = bubble("agent");
+  let hasRich = false;
+
+  for (const p of parts) {
+    if (p.kind === "a2ui" && p.data) {
+      if (renderA2uiMessage(p.data, container)) hasRich = true;
+    } else if (p.kind === "text" && p.text) {
+      const textNode = document.createTextNode(p.text);
+      container.appendChild(textNode);
     }
-    case "Icon": {
-      const s = el("span", "material-symbols-outlined"); s.textContent = iconName(boundStr(props.name) || props.name); return s;
-    }
-    default:
-      return null;   // unknown component -> skipped (text fallback covers content)
+  }
+
+  if (hasRich && container.children.length === 1 && container.firstElementChild.classList.contains("a2card")) {
+    container.classList.add("rich");
   }
 }
 
-// Render one or more A2UI messages (beginRendering + surfaceUpdate) into `container`.
-// Returns true if anything was drawn.
-function renderSurface(messages, container) {
-  const comps = {};
-  const roots = [];
-  for (const m of messages) {
-    if (m.beginRendering && typeof m.beginRendering.root === "string") roots.push(m.beginRendering.root);
-    const su = m.surfaceUpdate;
-    if (su && Array.isArray(su.components)) for (const c of su.components) if (c && c.id && c.component) comps[c.id] = c.component;
-  }
-  let rootIds = roots.filter(r => comps[r]);
-  if (rootIds.length === 0) {   // no valid root given -> infer un-referenced components
-    const referenced = new Set();
-    for (const id in comps) { const spec = comps[id]; childIds(spec[Object.keys(spec)[0]] || {}).forEach(c => referenced.add(c)); }
-    rootIds = Object.keys(comps).filter(id => !referenced.has(id));
-  }
-  let drew = false;
-  for (const rid of rootIds) { const node = buildNode(rid, comps, new Set()); if (node) { container.appendChild(node); drew = true; } }
-  return drew;
-}
-
-// Fallback: pull every Text value out of the messages as plain text.
-function flattenText(messages) {
-  const out = [];
-  for (const m of messages) {
-    const su = m.surfaceUpdate;
-    if (su && Array.isArray(su.components)) for (const c of su.components) if (c && c.component && c.component.Text) out.push(boundStr(c.component.Text.text));
-  }
-  return out.join("\n").trim();
-}
-
-function renderReply(b, parts) {
-  b.textContent = "";   // clear the "…" placeholder
-  const texts = parts.filter(p => p && (p.kind === "text" || (!p.kind && p.text))).map(p => p.text || "");
-  const a2ui = parts.filter(p => p && p.kind === "a2ui" && p.data).map(p => p.data);
-
-  const textStr = texts.join("\n").trim();
-  if (textStr) b.appendChild(el("div", null, textStr));
-
-  if (a2ui.length) {
-    b.classList.add("rich");
-    if (!renderSurface(a2ui, b)) b.appendChild(el("div", null, flattenText(a2ui) || "(no card content)"));
-  }
-  if (!b.childNodes.length) b.textContent = "(no response)";
-  log.scrollTop = log.scrollHeight;
-}
-
-// The proxy returns { parts: [{kind:"text",text} | {kind:"a2ui",data}] }.
-form.addEventListener("submit", async (ev) => {
-  ev.preventDefault();
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
   const text = input.value.trim();
   if (!text) return;
-  bubble("user").textContent = text;
   input.value = "";
-  const b = bubble("agent");
-  b.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+
+  bubble("user").textContent = text;
+  const loading = bubble("agent");
+  loading.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+
   try {
-    const res = await fetch("/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text }) });
-    // Read as text first, then parse. If the proxy ever returns a non-JSON error
-    // page (e.g. a plain "Internal Server Error"), show that body instead of a
-    // cryptic "Unexpected token" JSON error.
-    const raw = await res.text();
-    let data;
-    try { data = JSON.parse(raw); }
-    catch { throw new Error(`Server returned non-JSON (HTTP ${res.status}). ${raw.slice(0, 300)}`); }
-    renderReply(b, data.parts || []);
-  } catch (e) {
-    b.textContent = "Error: " + e.message;
+    const res = await fetch("/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
+    const data = await res.json();
+    loading.parentElement.remove();
+    renderReply(data.parts || []);
+  } catch (err) {
+    loading.parentElement.remove();
+    bubble("agent").textContent = "Error: " + err.message;
   }
 });
 
-document.querySelectorAll(".prompt-chip").forEach(btn => {
-  btn.addEventListener("click", () => {
-    input.value = btn.dataset.prompt;
-    form.requestSubmit();
+document.querySelectorAll(".prompt-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    input.value = chip.dataset.prompt;
+    form.dispatchEvent(new Event("submit"));
   });
 });
 </script>
