@@ -88,7 +88,13 @@ def _auth_headers() -> dict[str, str]:
     }
 
 
+from fastapi import FastAPI, Request, Response
+
 app = FastAPI()
+
+@app.get("/favicon.ico")
+async def favicon():
+    return Response(status_code=204)
 
 
 @app.exception_handler(Exception)
